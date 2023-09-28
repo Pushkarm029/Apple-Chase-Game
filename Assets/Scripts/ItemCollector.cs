@@ -19,6 +19,10 @@ public class ItemCollector : MonoBehaviour
             Destroy(collision.gameObject);
             apples++;
             applesText.text = "Apples : " + apples;
+            int highScore = PlayerPrefs.GetInt("HighScore");
+            if(apples > highScore){
+                PlayerPrefs.SetInt("HighScore",apples);
+            }
         }
     }
 }

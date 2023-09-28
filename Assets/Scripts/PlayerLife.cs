@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerLife : MonoBehaviour
 {
+    public int damageImpact = 22;
+    public Image healthBar;
+    public float healthAmount = 100f;
     private Rigidbody2D rb;
     private Animator anim;
 
     [SerializeField] private AudioSource deathSoundEffect;
+    [SerializeField] private AudioSource damageSoundEffect;
 
     private void Start()
     {
@@ -20,8 +25,22 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Trap"))
         {
-            Die();
+            Damage();
+        }
+    }
 
+    // damage anim is not working currently
+
+    private void Damage()
+    {
+        damageSoundEffect.time = 0.35f;
+        damageSoundEffect.Play();
+        anim.SetTrigger("damage");
+        healthAmount -= damageImpact;
+        healthBar.fillAmount = healthAmount / 100f;
+        if (healthAmount <= 0)
+        {
+            Die();
         }
     }
 
@@ -35,7 +54,7 @@ public class PlayerLife : MonoBehaviour
     private void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        
+
     }
-   
+
 }
